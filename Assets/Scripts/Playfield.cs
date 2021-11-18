@@ -6,10 +6,18 @@ public class Playfield : MonoBehaviour
 {
     public static Playfield instance;
 
+    public int gridSizeX, gridSizeY, gridSizeZ;
+
+    [Header("Blocks")]
+    public GameObject[] blocklist;
+
+    public GameObject[] ghostlist;
+
+    [Header("Playfield Visuals")]
     public GameObject bottomPlane;
+
     public GameObject N, S, W, E;
 
-    public int gridSizeX, gridSizeY, gridSizeZ;
     public Transform[,,] theGrid;
 
     private void Awake()
@@ -20,6 +28,7 @@ public class Playfield : MonoBehaviour
     private void Start()
     {
         theGrid = new Transform[gridSizeX, gridSizeY, gridSizeZ];
+        SpawnNewBlock();
     }
 
     //rounding function
@@ -40,22 +49,59 @@ public class Playfield : MonoBehaviour
 
     public void UpdatedGrid(TetrisBlock block)
     {
+        //delete possible parent objects
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int z = 0; z < gridSizeZ; z++)
             {
                 for (int y = 0; y < gridSizeY; y++)
                 {
-                    if (theGrid[x, y, z].parent == block.transform)
+                    if (theGrid[x, y, z] != null)
                     {
-                        theGrid[x, y, z] = null;
+                        if (theGrid[x, y, z].parent == block.transform)
+                        {
+                            theGrid[x, y, z] = null;
+                        }
                     }
                 }
             }
         }
-        foreach (Transform b in block.transform)
+        //fill fin all child objects
+        foreach (Transform child in block.transform)
         {
+            Vector3 pos = Round(child.position);
+            if (pos.y < gridSizeY)
+            {
+                theGrid[(int)pos.x, (int)pos.y, (int)pos.z] = child;
+            }
         }
+    }
+
+    public Transform GetTransformOnGridPos(Vector3 pos)
+    {
+        if (pos.y > gridSizeY - 1)
+        {
+            return null;
+        }
+        else
+        {
+            return theGrid[(int)pos.x, (int)pos.y, (int)pos.z];
+        }
+    }
+
+    public void SpawnNewBlock()
+    {
+        Vector3 spawnPoint = new Vector3((int)(transform.position.x + (float)gridSizeX / 2),
+                                             (int)transform.position.y + gridSizeY,
+                                             (int)(transform.position.z + (float)gridSizeZ / 2));
+        int randomIndex = Random.Range(0, blocklist.Length);
+
+        //SPAWN THE BLOCK /show new block
+        GameObject newBlock = Instantiate(blocklist[randomIndex], spawnPoint, Quaternion.identity) as GameObject;
+        //GHOST
+        GameObject newGhost = Instantiate(ghostlist[randomIndex], spawnPoint, Quaternion.identity) as GameObject;
+        newGhost.GetComponent<GhostBlock>().SetParent(newBlock);
+        //SET INPUTS
     }
 
     private void OnDrawGizmos()
