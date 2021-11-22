@@ -35,35 +35,35 @@ public class TetrisBlock : MonoBehaviour
         }
 
         // LEFT RIGHT FORWARD BACK
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetButtonDown("West"))
         {
             SetInput(Vector3.left);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetButtonDown("East"))
         {
             SetInput(Vector3.right);
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetButtonDown("South"))
         {
             SetInput(Vector3.forward);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetButtonDown("North"))
         {
             SetInput(Vector3.back);
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetAxis("RightJoyX") > 0)
         {
             SetRotationInput(new Vector3(90, 0, 0));
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetAxis("RightJoyX") < 0)
         {
             SetRotationInput(new Vector3(-90, 0, 0));
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetAxis("RightJoyY") < 0)
         {
             SetRotationInput(new Vector3(0, 0, 90));
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetAxis("RightJoyY") > 0)
         {
             SetRotationInput(new Vector3(0, 0, -90));
         }
@@ -122,6 +122,11 @@ public class TetrisBlock : MonoBehaviour
 
     public void SetSpeed()
     {
-        fallTime = 0.1f;
+        fallTime = 0.05f;
     }
+
+    // public void SetHighSpeed()
+    // {
+    //      activeTetris.setSpeed();
+    // }
 }

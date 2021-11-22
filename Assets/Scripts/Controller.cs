@@ -12,6 +12,5 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetButtonDown("North")) { Debug.Log("North") }
     }
 }
