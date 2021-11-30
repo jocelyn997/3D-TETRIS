@@ -5,11 +5,13 @@ using UnityEngine;
 public class TetrisBlock : MonoBehaviour
 {
     private float prevTime;
-    private float fallTime = 1f;
+    private float fallTime = 0.6f;
 
     private void Start()
     {
     }
+
+    private Vector3 nextMove = Vector3.zero;
 
     private void Update()
     {
@@ -37,35 +39,54 @@ public class TetrisBlock : MonoBehaviour
         // LEFT RIGHT FORWARD BACK
         if (Input.GetButtonDown("West"))
         {
-            SetInput(Vector3.left);
+            SetRotationInput(new Vector3(0, 0, -90));
         }
         if (Input.GetButtonDown("East"))
         {
-            SetInput(Vector3.right);
+            SetRotationInput(new Vector3(0, 0, 90));
         }
         if (Input.GetButtonDown("South"))
         {
-            SetInput(Vector3.forward);
+            SetRotationInput(new Vector3(-90, 0, 0));
         }
         if (Input.GetButtonDown("North"))
         {
-            SetInput(Vector3.back);
-        }
-        if (Input.GetAxis("RightJoyX") > 0)
-        {
             SetRotationInput(new Vector3(90, 0, 0));
         }
-        if (Input.GetAxis("RightJoyX") < 0)
+        if (Input.GetAxis("Dpad Horizontal") > 0)
         {
-            SetRotationInput(new Vector3(-90, 0, 0));
+            nextMove += Vector3.right * 0.05f;
+            //SetInput(Vector3.right * 0.05f);
         }
-        if (Input.GetAxis("RightJoyY") < 0)
+        if (Input.GetAxis("Dpad Horizontal") < 0)
         {
-            SetRotationInput(new Vector3(0, 0, 90));
+            nextMove += Vector3.left * 0.05f;
+            //SetInput(Vector3.left * 0.05f);
         }
-        if (Input.GetAxis("RightJoyY") > 0)
+        if (Input.GetAxis("Dpad Vertical") < 0)
         {
-            SetRotationInput(new Vector3(0, 0, -90));
+            nextMove += Vector3.back * 0.05f;
+            //SetInput(Vector3.back * 0.05f);
+        }
+        if (Input.GetAxis("Dpad Vertical") > 0)
+        {
+            nextMove += Vector3.forward * 0.05f;
+            //SetInput(Vector3.forward * 0.05f);
+        }
+
+        float x = nextMove.x;
+        float z = nextMove.z;
+        if (Mathf.Abs(x) >= 1 || Mathf.Abs(z) >= 1)
+        {
+            x = Mathf.Round(x);
+            z = Mathf.Round(z);
+            nextMove = new Vector3(x, 0, z);
+            SetInput(nextMove);
+            nextMove = Vector3.zero;
+        }
+        else
+        {
+            SetInput(Vector3.zero);
         }
     }
 
@@ -125,8 +146,8 @@ public class TetrisBlock : MonoBehaviour
         fallTime = 0.05f;
     }
 
-    // public void SetHighSpeed()
+    //  public void SetHighSpeed()
     // {
-    //      activeTetris.setSpeed();
-    // }
+    //    activeTetris.setSpeed();
+    //   }
 }
