@@ -20,6 +20,14 @@ public class Playfield : MonoBehaviour
 
     public Transform[,,] theGrid;
 
+    private GameObject previewTetris;
+
+    private GameObject nextTetris;
+    private bool gameStarted = false;
+
+    [Header("Preview Position")]
+    public Vector3 previewTetrisPosition;
+
     private void Awake()
     {
         instance = this;
@@ -94,6 +102,12 @@ public class Playfield : MonoBehaviour
         }
     }
 
+    //  private int randomIndex1 = Random.Range(0, blocklist.Length);
+
+    public void preview()
+    {
+    }
+
     public void SpawnNewBlock()
     {
         Vector3 spawnPoint = new Vector3((int)(transform.position.x + (float)gridSizeX / 2),
@@ -108,6 +122,43 @@ public class Playfield : MonoBehaviour
         newGhost.GetComponent<GhostBlock>().SetParent(newBlock);
         //SET INPUTS
     }
+
+    //  public void SpawnNewBlock()
+    //  {
+    //      Vector3 spawnPoint = new Vector3((int)(transform.position.x + (float)gridSizeX / 2),
+    //                                (int)transform.position.y + gridSizeY,
+    //                               (int)(transform.position.z + (float)gridSizeZ / 2));
+    //      int randomIndex1 = Random.Range(0, blocklist.Length);
+
+    //   nextTetris =
+    //   if (gameStarted)
+    //    {
+    //          gameStarted = true;
+
+    //SPAWN THE BLOCK /show new block
+    //       GameObject newBlock = Instantiate(blocklist[randomIndex], spawnPoint, Quaternion.identity) as GameObject;
+    //     previewTetris = Instantiate(blocklist[randomIndex], previewTetrisPosition, Quaternion.identity) as GameObject;
+    //      previewTetris.GetComponent<TetrisBlock>().enabled = false;
+
+    //GHOST
+    //      GameObject newGhost = Instantiate(ghostlist[randomIndex], spawnPoint, Quaternion.identity) as GameObject;
+    //       newGhost.GetComponent<GhostBlock>().SetParent(newBlock);
+    //    }
+    //     else
+    //     {
+    //         previewTetris = Instantiate(blocklist[randomIndex1], previewTetrisPosition, Quaternion.identity) as GameObject;
+    //         previewTetris.GetComponent<TetrisBlock>().enabled = false;
+
+    //          GameObject newBlock = Instantiate(blocklist[randomIndex1], spawnPoint, Quaternion.identity) as GameObject;
+
+    //         GameObject newGhost = Instantiate(ghostlist[randomIndex1], spawnPoint, Quaternion.identity) as GameObject;
+    //          newGhost.GetComponent<GhostBlock>().SetParent(newBlock);
+
+    //    previewTetris.transform.localPosition = spawnPoint;
+    //      nextTetris = previewTetris;
+    //       nextTetris.GetComponent<TetrisBlock>().enabled = true;
+    //   }
+    //  }
 
     private void OnDrawGizmos()
     {

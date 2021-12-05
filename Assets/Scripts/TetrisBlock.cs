@@ -8,7 +8,7 @@ public class TetrisBlock : MonoBehaviour
     private float prevTime;
 
     //数值越大速度越慢
-    private float fallTime = 1f;
+    private float fallTime = 10f;
 
     private void Start()
     {
@@ -60,22 +60,22 @@ public class TetrisBlock : MonoBehaviour
         }
         if (Input.GetAxis("Dpad Horizontal") > 0)
         {
-            nextMove += Vector3.right * 0.2f;
+            nextMove += Vector3.right * 0.1f;
             //SetInput(Vector3.right * 0.05f);
         }
         if (Input.GetAxis("Dpad Horizontal") < 0)
         {
-            nextMove += Vector3.left * 0.2f;
+            nextMove += Vector3.left * 0.1f;
             //SetInput(Vector3.left * 0.05f);
         }
         if (Input.GetAxis("Dpad Vertical") < 0)
         {
-            nextMove += Vector3.back * 0.2f;
+            nextMove += Vector3.back * 0.1f;
             //SetInput(Vector3.back * 0.05f);
         }
         if (Input.GetAxis("Dpad Vertical") > 0)
         {
-            nextMove += Vector3.forward * 0.2f;
+            nextMove += Vector3.forward * 0.1f;
             //SetInput(Vector3.forward * 0.05f);
         }
 
