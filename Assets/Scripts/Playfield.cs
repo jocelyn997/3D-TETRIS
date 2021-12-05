@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,19 +28,23 @@ public class Playfield : MonoBehaviour
     private void Start()
     {
         theGrid = new Transform[gridSizeX, gridSizeY, gridSizeZ];
+        //？这一行有问题？
         SpawnNewBlock();
     }
 
-    //rounding function
+    //rounding function 滚动检测
     public Vector3 Round(Vector3 vec)
     {
+        //滚动数值去整数，移动整数格
         return new Vector3(Mathf.RoundToInt(vec.x),
                              Mathf.RoundToInt(vec.y),
                              Mathf.RoundToInt(vec.z));
     }
 
+    //检查是否在网格内部
     public bool CheckInsideGrid(Vector3 pos)
 
+    //检车X,Y,Z是否大于0,最大值是否小于网格极大
     {
         return ((int)pos.x >= 0 && (int)pos.x < gridSizeX &&
                  (int)pos.z >= 0 && (int)pos.z < gridSizeZ &&
@@ -50,6 +54,7 @@ public class Playfield : MonoBehaviour
     public void UpdatedGrid(TetrisBlock block)
     {
         //delete possible parent objects
+        //parent object是四个盒子形成的形态，child是单个的盒子，更新网格成把整个的大格子换成小格子的坐标去判断。
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int z = 0; z < gridSizeZ; z++)
@@ -66,7 +71,7 @@ public class Playfield : MonoBehaviour
                 }
             }
         }
-        //fill fin all child objects
+        //fill in all child objects
         foreach (Transform child in block.transform)
         {
             Vector3 pos = Round(child.position);

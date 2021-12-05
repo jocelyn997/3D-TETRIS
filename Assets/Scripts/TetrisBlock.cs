@@ -1,11 +1,14 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TetrisBlock : MonoBehaviour
 {
+    //下落速率
     private float prevTime;
-    private float fallTime = 0.6f;
+
+    //数值越大速度越慢
+    private float fallTime = 1f;
 
     private void Start()
     {
@@ -15,7 +18,9 @@ public class TetrisBlock : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time - prevTime > fallTime)
+        //下落节奏，检查网格剩余空位,/数越大速度越快
+        if (Time.time - prevTime > (Input.GetButtonDown("Left Bumper") ? fallTime / 500 : fallTime))
+        //  GetButtonDown("Left Bumper")
         {
             transform.position += Vector3.down;
             if (!CheckVaildMove())
@@ -39,11 +44,11 @@ public class TetrisBlock : MonoBehaviour
         // LEFT RIGHT FORWARD BACK
         if (Input.GetButtonDown("West"))
         {
-            SetRotationInput(new Vector3(0, 0, -90));
+            SetRotationInput(new Vector3(0, -90, 0));
         }
         if (Input.GetButtonDown("East"))
         {
-            SetRotationInput(new Vector3(0, 0, 90));
+            SetRotationInput(new Vector3(0, 90, 0));
         }
         if (Input.GetButtonDown("South"))
         {
@@ -55,22 +60,22 @@ public class TetrisBlock : MonoBehaviour
         }
         if (Input.GetAxis("Dpad Horizontal") > 0)
         {
-            nextMove += Vector3.right * 0.05f;
+            nextMove += Vector3.right * 0.2f;
             //SetInput(Vector3.right * 0.05f);
         }
         if (Input.GetAxis("Dpad Horizontal") < 0)
         {
-            nextMove += Vector3.left * 0.05f;
+            nextMove += Vector3.left * 0.2f;
             //SetInput(Vector3.left * 0.05f);
         }
         if (Input.GetAxis("Dpad Vertical") < 0)
         {
-            nextMove += Vector3.back * 0.05f;
+            nextMove += Vector3.back * 0.2f;
             //SetInput(Vector3.back * 0.05f);
         }
         if (Input.GetAxis("Dpad Vertical") > 0)
         {
-            nextMove += Vector3.forward * 0.05f;
+            nextMove += Vector3.forward * 0.2f;
             //SetInput(Vector3.forward * 0.05f);
         }
 
@@ -117,11 +122,14 @@ public class TetrisBlock : MonoBehaviour
         }
     }
 
+    // 是否在网格内部移动，定义了round
     private bool CheckVaildMove()
     {
         foreach (Transform child in transform)
         {
             Vector3 pos = Playfield.instance.Round(child.position);
+
+            //检查是不是在网格内部
             if (!Playfield.instance.CheckInsideGrid(pos))
             {
                 return false;
